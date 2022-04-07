@@ -20,9 +20,7 @@
         </div>
       </div>
       <div class="home-body">
-        <div v-for="(item, index) in store.countries" :key="index">
-          <Card :country="item" :test="123"></Card>
-        </div>
+          <Card :country="store.countries"></Card>
       </div>
       <div class="text-center mt-10">
       <v-pagination

@@ -1,39 +1,12 @@
-<script lang="ts">
-    export default {
-        name: 'Card',
-        props: {
-            item: {
-                type: Object,
-            },
-            test: {
-                type: String
-            }
-        },
-        mounted() {
-            console.log(this.props.item);
-            console.log(this.props.test);
-        }
-        // props: ['item', 'test'],
-        // setup(props: any) {
-
-        //     watchEffect(() => {
-        //         console.log(props.item)
-        //         console.log(props.test)
-        //     })
-
-
-        //     // return {
-        //     //     props
-        //     // }
-        // }
-    }
+<script setup lang="ts">
+    const props = defineProps(['country'])
 </script>
 
 <template>
-    <div class="wrapper-card mt-5">
+    <div v-for="(item, index) in country" :key="index" class="wrapper-card mt-5">
        <div><img src="../assets/flag.png" alt="" style="width: 320px; height: 180px;"></div>
         <div class="pt-2 pb-5 pl-8 pr-8">
-            <h3>123123123123</h3>
+            <h3>{{ item.name }}</h3>
             <div class="d-flex mt-4" style="white-space: nowrap;">
                 <p><b>Popolation:</b> Nguyen Kim Tien</p>
             </div>
