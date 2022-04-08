@@ -4,17 +4,17 @@
 
 <template>
     <div v-for="(item, index) in country" :key="index" class="wrapper-card mt-5">
-       <div><img src="../assets/flag.png" alt="" style="width: 320px; height: 180px;"></div>
+       <div><img :src=item.flag style="width: 320px; height: 180px;"></div>
         <div class="pt-2 pb-5 pl-8 pr-8">
             <h3>{{ item.name }}</h3>
             <div class="d-flex mt-4" style="white-space: nowrap;">
-                <p><b>Popolation:</b> Nguyen Kim Tien</p>
+                <p><b>Population:</b> {{ item.population}}</p>
             </div>
             <div class="d-flex mt-2">
-                <b>Region:</b><p> 1231123</p>
+                <b>Region:</b><p> {{ item.region}}</p>
             </div>
             <div class="d-flex mt-2">
-                <b>Capital:</b><p> 1231123</p>
+                <b>Capital:</b><p> {{ item.capital}}</p>
             </div>
         </div>
     </div>

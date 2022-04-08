@@ -4,6 +4,8 @@
       <div class="d-flex justify-space-between mt-5">
         <div class="txt-search">
           <v-text-field
+            v-model="store.search"
+            @update:modelValue="handleSearch"
             label="Search for a country..."
             prepend-inner-icon="fa-solid fa-magnifying-glass"
             variant="contained"
@@ -12,23 +14,26 @@
         <div style="width: 300px;">
           <v-select
             v-model="store.select"
-            :items="store.regions"
+            :items="country.regions"
             :rules="[(v: any) => !!v || 'Item is required']"
             label="Filter by Region"
             required
+            @update:modelValue="handleChangeRegion($event)"
           ></v-select>
+
+          {{ store.select }}
         </div>
       </div>
       <div class="home-body">
-          <Card :country="store.countries"></Card>
+          <Card :country="arrCountries"></Card>
       </div>
       <div class="text-center mt-10">
       <v-pagination
         v-model="store.page"
-        :length="15"
+        :length="country.totalPage"
         :total-visible="7"
+        @click="handleChangePage"
       ></v-pagination>
-      {{ arrCountries }}
     </div>
     </div>
   </div>
@@ -48,6 +53,7 @@ export default defineComponent({
   },
 
   setup() {
+    const search = ref('');
     const page = ref(1);
     const select = ref('');
     const regions = ref([
@@ -57,78 +63,39 @@ export default defineComponent({
       'Item 4',
     ]);
 
-    const countries = ref([
-      {
-        id: 1,
-        name: 'Viet Nam',
-        population: '123',
-        region: 'Asia',
-        capital: 'Hà Nội'
-      },
-      {
-        id: 2,
-        name: 'Viet Nam',
-        population: '123',
-        region: 'Asia',
-        capital: 'Hà Nội'
-      },
-      {
-        id: 3,
-        name: 'Viet Nam',
-        population: '123',
-        region: 'Asia',
-        capital: 'Hà Nội'
-      },
-      {
-        id: 4,
-        name: 'Viet Nam',
-        population: '123',
-        region: 'Asia',
-        capital: 'Hà Nội'
-      },
-      {
-        id: 5,
-        name: 'Viet Nam',
-        population: '123',
-        region: 'Asia',
-        capital: 'Hà Nội'
-      },
-      {
-        id: 6,
-        name: 'Viet Nam 6',
-        population: '123',
-        region: 'Asia',
-        capital: 'Hà Nội'
-      },
-      {
-        id: 7,
-        name: 'Viet Nam 7',
-        population: '123',
-        region: 'Asia',
-        capital: 'Hà Nội'
-      },
-      {
-        id: 8,
-        name: 'Viet Nam 8',
-        population: '123',
-        region: 'Asia',
-        capital: 'Hà Nội'
-      },
-    ])
-
     const country = useStore();
 
     const store = reactive({
-      page, select, regions, countries
+      page, select, regions, search
     })
 
     onMounted(async () => {
       country.getCountries();
     })
 
+    const handleChangePage = () => {
+      country.changePage(page.value);
+    }
+
+    const handleGetCountry = () => {
+      
+    }
+
+    const handleChangeRegion = (event: any) => {
+      console.log(event);
+    }
+
+    const handleSearch = (event: any) => {
+      country.searchCountries(event);
+    }
+
     return {
       store,
-      arrCountries: computed(() => country.arrCountries),
+      country,
+      arrCountries: computed(() => country.limitCountries),
+      handleChangePage,
+      handleSearch,
+      handleChangeRegion
     }
   }
 });
