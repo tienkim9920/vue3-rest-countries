@@ -28,13 +28,16 @@
         :length="15"
         :total-visible="7"
       ></v-pagination>
+      {{ arrCountries }}
     </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import { useStore } from '@/stores/contries.pinia';
+import { computed } from '@vue/reactivity';
+import { defineComponent, onMounted, reactive, ref } from 'vue';
 import Card from '../components/Card.vue';
 
 export default defineComponent({
@@ -113,16 +116,19 @@ export default defineComponent({
       },
     ])
 
+    const country = useStore();
+
     const store = reactive({
       page, select, regions, countries
     })
 
-    const handleGetCountryDetail = (id: string) => {
-      console.log(id)
-    }
+    onMounted(async () => {
+      country.getCountries();
+    })
 
     return {
-      store
+      store,
+      arrCountries: computed(() => country.arrCountries),
     }
   }
 });
