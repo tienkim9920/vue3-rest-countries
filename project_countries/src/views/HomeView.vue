@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="home-body">
-          <Card :country="arrCountries"></Card>
+          <Card :country="arrCountries" @handleGetCountry="handleGetCountry($event)"></Card>
       </div>
       <div class="text-center mt-10">
       <v-pagination
@@ -43,6 +43,7 @@ import { computed } from '@vue/reactivity';
 import { defineComponent, onMounted, reactive, ref } from 'vue';
 import Card from '../components/Card.vue';
 import { SELECT } from "@/global.ts/global.const";
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'HomeView',
@@ -52,6 +53,8 @@ export default defineComponent({
   },
 
   setup() {
+    const router = useRouter();
+
     const search = ref('');
     const select = ref(SELECT);
     const regions = ref([
@@ -67,7 +70,7 @@ export default defineComponent({
       select, regions, search
     })
 
-    onMounted(async () => {
+    onMounted(() => {
       country.getCountries();
     })
 
@@ -75,8 +78,8 @@ export default defineComponent({
       country.changePage(country.page);
     }
 
-    const handleGetCountry = () => {
-      
+    const handleGetCountry = (event: any) => {
+      router.push(`/detail/${event}`);
     }
 
     const handleChangeRegion = (event: any) => {
@@ -95,7 +98,8 @@ export default defineComponent({
       page: computed(() => country.page),
       handleChangePage,
       handleSearch,
-      handleChangeRegion
+      handleChangeRegion,
+      handleGetCountry
     }
   }
 });

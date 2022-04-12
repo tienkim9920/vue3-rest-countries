@@ -51,7 +51,6 @@ export const useStore = defineStore('country', {
 
       if (checkFilter && this.arrCountries.length === 0){
         this.arrCountries = this.arrCountriesBackup;
-        console.log("54");
       }else if (!checkFilter && this.arrCountries.length === 0 && !keywordSearch) {
         this.arrCountries = this.arrCountriesBackup.filter((element: any) => {
           return element.region == keywordFilter
