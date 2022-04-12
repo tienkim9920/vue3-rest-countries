@@ -20,8 +20,6 @@
             required
             @update:modelValue="handleChangeRegion($event)"
           ></v-select>
-
-          {{ store.select }}
         </div>
       </div>
       <div class="home-body">
@@ -29,7 +27,7 @@
       </div>
       <div class="text-center mt-10">
       <v-pagination
-        v-model="store.page"
+        v-model="country.page"
         :length="country.totalPage"
         :total-visible="7"
         @click="handleChangePage"
@@ -44,6 +42,7 @@ import { useStore } from '@/stores/contries.pinia';
 import { computed } from '@vue/reactivity';
 import { defineComponent, onMounted, reactive, ref } from 'vue';
 import Card from '../components/Card.vue';
+import { SELECT } from "@/global.ts/global.const";
 
 export default defineComponent({
   name: 'HomeView',
@@ -54,8 +53,7 @@ export default defineComponent({
 
   setup() {
     const search = ref('');
-    const page = ref(1);
-    const select = ref('');
+    const select = ref(SELECT);
     const regions = ref([
       'Item 1',
       'Item 2',
@@ -66,7 +64,7 @@ export default defineComponent({
     const country = useStore();
 
     const store = reactive({
-      page, select, regions, search
+      select, regions, search
     })
 
     onMounted(async () => {
@@ -74,7 +72,7 @@ export default defineComponent({
     })
 
     const handleChangePage = () => {
-      country.changePage(page.value);
+      country.changePage(country.page);
     }
 
     const handleGetCountry = () => {
@@ -82,17 +80,19 @@ export default defineComponent({
     }
 
     const handleChangeRegion = (event: any) => {
-      console.log(event);
+      country.changePage(1);
+      country.callCountries(search.value.toString(), event);
     }
 
     const handleSearch = (event: any) => {
-      country.searchCountries(event);
+      country.callCountries(event, select.value.toString());
     }
 
     return {
       store,
       country,
       arrCountries: computed(() => country.limitCountries),
+      page: computed(() => country.page),
       handleChangePage,
       handleSearch,
       handleChangeRegion
